@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from 'react';
 import { Quote, Star, Languages, ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
@@ -64,7 +65,7 @@ const Testimonial = () => {
                   <blockquote className="relative">
                     <Quote className="absolute -top-2 -left-2 w-6 h-6 text-blue-200" />
                     <p className="text-base sm:text-lg text-gray-800 leading-relaxed pl-4">
-                      Learning German with Frau Schmidt has been transformative. Her teaching method makes complex grammar concepts feel natural. Now I'm confidently speaking in business meetings!
+                      Learning German with Frau Schmidt has been transformative. Her teaching method makes complex grammar concepts feel natural. Now I&apos;m confidently speaking in business meetings!
                     </p>
                   </blockquote>
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
@@ -110,7 +111,7 @@ const Testimonial = () => {
                   <blockquote className="relative">
                     <Quote className="absolute -top-2 -left-2 w-6 h-6 text-blue-200" />
                     <p className="text-base sm:text-lg text-gray-800 leading-relaxed pl-4">
-                      The approach taken here helped me learn the language quickly. I'm already applying my German skills in professional settings.
+                      The approach taken here helped me learn the language quickly. I&apos;m already applying my German skills in professional settings.
                     </p>
                   </blockquote>
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
@@ -202,7 +203,7 @@ const Testimonial = () => {
                   <blockquote className="relative">
                     <Quote className="absolute -top-2 -left-2 w-6 h-6 text-blue-200" />
                     <p className="text-base sm:text-lg text-gray-800 leading-relaxed pl-4">
-                      I couldn't believe how quickly I learned! The exercises were really practical and helped me apply the language in my everyday life.
+                      I couldn&apos;t believe how quickly I learned! The exercises were really practical and helped me apply the language in my everyday life.
                     </p>
                   </blockquote>
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">

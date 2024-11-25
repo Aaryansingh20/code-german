@@ -98,7 +98,7 @@ export default function LandingPage() {
             {isOpen && (
               <div className="mt-2 bg-blue-600 shadow-md p-3 md:hidden">
                 <nav className="flex flex-col space-y-2">
-                  {["About Us", "Courses", "Why Us", "Contact Us"].map((item) => (
+                  {["About Me", "Courses", "Why Us", "Contact Us"].map((item) => (
                     <Link
                       key={item}
                       href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}

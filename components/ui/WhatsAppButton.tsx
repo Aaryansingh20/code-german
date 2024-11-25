@@ -4,7 +4,7 @@ import whatsapp from "@/public/whatsapp.png"
 
 const WhatsAppButton: React.FC = () => {
   const handleWhatsAppClick = () => {
-    window.open('https://wa.me/919636965317', '_blank');
+    window.open('https://wa.me/9667984165', '_blank');
   };
 
   return (

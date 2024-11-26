@@ -3,30 +3,58 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Menu, X, CalendarIcon, Facebook, Twitter, Instagram } from 'lucide-react'
+import { Menu, X, Facebook, Twitter, Instagram } from 'lucide-react'
 import Image from 'next/image'
-import { format } from "date-fns"
-import { cn } from "@/lib/utils"
 import Testimonial from './sections/testimonial/page'
 import WhatsAppButton from '@/components/ui/WhatsAppButton'
-import ScrollBar from '@/components/ui/scrollbar'
 import ScrollToTopButton from '@/components/ui/scrollupbtn'
 import { motion } from 'framer-motion'
+import logo from "@/public/img/code german_ transparent  (1).png"
+import CourseGrid from './sections/course-grid/coursegrid'
+import CarouselHero from './sections/caroselsection/carosel'
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
+
 
 export default function LandingPage() {
   const [isOpen, setIsOpen] = useState(false)
-  const [date, setDate] = useState<Date>()
   const [isVisible, setIsVisible] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false);
+  const [date, setDate] = useState<Date>();
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    // Handle form submission logic here
+    console.log("Form submitted");
+    setModalOpen(false);
+  };
+
+  // Automatically open the modal every one minute
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setModalOpen(true);
+    }, 120000); // 1 minute = 60000 ms
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, []);
 
   useEffect(() => {
     setIsVisible(true)
@@ -51,22 +79,22 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900">
+    <div className="flex flex-col min-h-screen bg-[#f3e8e3] text-gray-900">
       <main className="flex-grow">
-        <div className="bg-[#19324e] shadow-md">
+        <div className="bg-[#f3e8e3] shadow-md">
           <header className="mx-auto max-w-[1400px] p-2">
             <div className="flex items-center justify-between px-6 py-2">
               {/* Logo Section */}
               <div className="flex items-center">
                 <Link href="/" className="flex items-center space-x-2">
                   <Image
-                    src="https://i.pinimg.com/736x/52/04/fb/5204fbf7095006e5a9b025db4ae64e6b.jpg"
-                    alt="Logo"
-                    width={32}
-                    height={32}
-                    className="bg-white"
+                    src={logo}
+                    alt=''
+                    height={40}
+                    width={40}
                   />
-                  <span className="text-lg font-semibold text-white">Code German</span>
+
+                  <span className="text-lg font-semibold text-black">Code German</span>
                 </Link>
               </div>
 
@@ -76,9 +104,9 @@ export default function LandingPage() {
                   <Link
                     key={item}
                     href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="text-lg font-semibold text-white transition-colors duration-200 hover:text-blue-200 relative"
+                    className="text-lg font-semibold text-black transition-colors duration-200 hover:text-black relative"
                   >
-                    <span className="after:content-[''] after:block after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+                    <span className="after:content-[''] after:block after:w-0 after:h-0.5 after:bg-black after:transition-all after:duration-300 hover:after:w-full">
                       {item}
                     </span>
                   </Link>
@@ -114,144 +142,93 @@ export default function LandingPage() {
           </header>
         </div>
         {/* Hero Section */}
-        <section className="relative bg-cover bg-center text-white py-20 overflow-hidden min-h-screen flex items-center" >
-          {/* Dynamic background */}
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'url(https://i.pinimg.com/736x/cd/21/bb/cd21bb53aba2cfa626144cbd740db68c.jpg)', backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            width: '100%',
-            height: '100%',
-          }}>
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNncmlkKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==')] opacity-20"></div>
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MiIgaGVpZ2h0PSI1MiI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIi8+PC9zdmc+')] opacity-20"></div>
-          </div>
+        <section
+  className="relative bg-cover bg-center text-white py-20 overflow-hidden min-h-screen flex items-center justify-center"
+  style={{
+    backgroundImage:
+      'url(https://images.pexels.com/photos/5473881/pexels-photo-5473881.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    width: '100%',
+    height: '100%',
+  }}
+>
+  {/* Dynamic background */}
+  <div className="absolute inset-0">
+    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNncmlkKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==')] opacity-20"></div>
+    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MiIgaGVpZ2h0PSI1MiI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIi8+PC9zdmc+')] opacity-20"></div>
+  </div>
 
-          <div className="container mx-auto px-4 md:px-8 lg:px-16 xl:px-24 relative z-10">
-            <motion.div
-              className="flex flex-col md:flex-row items-center justify-between"
-              initial="hidden"
-              animate={isVisible ? "visible" : "hidden"}
-              variants={containerVariants}
-            >
-              <div className="md:w-1/2 mb-12 md:mb-0">
-                <motion.h2
-                  className="text-5xl md:text-6xl font-bold mb-6 leading-tight"
-                  variants={itemVariants}
-                >
-                  Master German
-                  <span className="block text-white">From Anywhere, Anytime!</span>
-                </motion.h2>
-                <motion.p
-                  className="text-xl mb-8 text-white"
-                  variants={itemVariants}
-                >
-                  Join personalized online classes designed for learners of all levels.
-                </motion.p>
-                <motion.div
-                  className="space-x-4 mb-12"
-                  variants={itemVariants}
-                >
-                  <Button size="lg" className="bg-blue-600 hover:bg-blue-500 text-white" onClick={() => {
-                    const aboutSection = document.getElementById('contact-us');
-                    aboutSection?.scrollIntoView({ behavior: 'smooth' });
-                  }} >
-                    Contact Us
-                  </Button>
-                  <Button variant="outline" size="lg" className="border-blue border-2 text-white bg-transparent hover:text-white hover:bg-white/20" onClick={() => {
-                    const aboutSection = document.getElementById('courses');
-                    aboutSection?.scrollIntoView({ behavior: 'smooth' });
-                  }}>
-                    View Course
-                  </Button>
-                </motion.div>
-                <motion.div
-                  className="flex space-x-8 font-bold text-4xl md:text-5xl text-white"
-                  variants={itemVariants}
-                >
-                  {[
-                    { number: "6+", text: "Years of experience" },
-                    { number: "10k+", text: "students trained" },
-                    { number: "27+", text: "student enrollment countries" },
-                  ].map((stat, index) => (
-                    <div key={index} className="text-center">
-                      <h3 className="mb-2">{stat.number}</h3>
-                      <p className="text-sm font-normal text-white">{stat.text}</p>
-                    </div>
-                  ))}
-                </motion.div>
-              </div>
-              <motion.div
-                className="md:w-1/2 grid grid-cols-3 gap-4"
-                variants={itemVariants}
-              >
-                <div className="col-span-2 row-span-2 relative overflow-hidden rounded-lg shadow-xl">
-                  <Image
-                    src="https://i.pinimg.com/736x/31/01/e8/3101e8e4bbe34881eca59d03cac91a2c.jpg"
-                    alt="Brandenburg Gate"
-                    width={600}
-                    height={400}
-                    className="w-full h-full object-cover transition-transform duration-5000 ease-in-out hover:scale-110"
-                  />
-                </div>
-                <div className="relative overflow-hidden rounded-lg shadow-xl">
-                  <Image
-                    src="https://i.pinimg.com/736x/50/b7/5d/50b75deb5b8ab3c63c096bd655475adb.jpg"
-                    alt="German Food"
-                    width={200}
-                    height={200}
-                    className="w-full h-full object-cover transition-transform duration-5000 ease-in-out hover:scale-110"
-                  />
-                </div>
-                <div className="relative overflow-hidden rounded-lg shadow-xl">
-                  <Image
-                    src="https://i.pinimg.com/736x/71/06/f3/7106f38e8a74ddf6236b49f81b326cee.jpg"
-                    alt="Neuschwanstein Castle"
-                    width={200}
-                    height={200}
-                    className="w-full h-full object-cover transition-transform duration-5000 ease-in-out hover:scale-110"
-                  />
-                </div>
-              </motion.div>
-            </motion.div>
+  <div className="container mx-auto px-4 md:px-8 lg:px-16 xl:px-24 relative z-10 text-center">
+    <motion.div
+      className="flex flex-col items-center"
+      initial="hidden"
+      animate={isVisible ? "visible" : "hidden"}
+      variants={containerVariants}
+    >
+      <motion.h2
+        className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+        variants={itemVariants}
+      >
+        Master German
+        <span className="block text-white">From Anywhere, Anytime!</span>
+      </motion.h2>
+      <motion.p
+        className="text-lg md:text-xl lg:text-2xl mb-8 text-white"
+        variants={itemVariants}
+      >
+        Join personalized online classes designed for learners of all levels.
+      </motion.p>
+      <motion.div className="space-x-4 mb-12" variants={itemVariants}>
+        <Button
+          size="lg"
+          className="bg-[#f2b31e] hover:bg-[#f9d98c] text-white"
+          onClick={() => setModalOpen(true)}
+        >
+          Contact Us
+        </Button>
+        <Button
+          variant="outline"
+          size="lg"
+          className="border-blue border-2 text-white bg-transparent hover:text-white hover:bg-white/20"
+          onClick={() => {
+            const aboutSection = document.getElementById("courses");
+            aboutSection?.scrollIntoView({ behavior: "smooth" });
+          }}
+        >
+          View Course
+        </Button>
+      </motion.div>
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center"
+        variants={itemVariants}
+      >
+        {[
+          { number: "6+", text: "Years of experience" },
+          { number: "10k+", text: "students trained" },
+          { number: "27+", text: "student enrollment countries" },
+        ].map((stat, index) => (
+          <div key={index}>
+            <h3 className="text-4xl font-bold mb-2">{stat.number}</h3>
+            <p className="text-base md:text-lg text-white">{stat.text}</p>
           </div>
-        </section>
+        ))}
+      </motion.div>
+    </motion.div>
+  </div>
+</section>
+
 
 
 
         {/* About Services Section */}
-        <section id="about" className="py-20 bg-[#19324e] relative overflow-hidden">
+        <section id="about" className="py-20 bg-[#f3eeec] relative overflow-hidden">
           {/* Background SVG */}
-          <div className="absolute inset-0 opacity-30">
-            <svg
-              className="h-full w-full"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 1000 1000"
-              preserveAspectRatio="none"
-            >
-              <defs>
-                <linearGradient
-                  id="about-gradient"
-                  gradientUnits="userSpaceOnUse"
-                  x1="0"
-                  x2="1000"
-                  y1="0"
-                  y2="1000"
-                >
-                  <stop offset="0" stopColor="#4299e1" />
-                  <stop offset="1" stopColor="#3182ce" />
-                </linearGradient>
-              </defs>
-              <path fill="url(#about-gradient)" d="M0 0l1000 1000H0V0z" />
-              <path fill="#fff" d="M0 200l1000 800H0V200z" opacity=".1" />
-              <path fill="#fff" d="M0 400l1000 600H0V400z" opacity=".1" />
-              <path fill="#fff" d="M0 600l1000 400H0V600z" opacity=".1" />
-              <path fill="#fff" d="M0 800l1000 200H0V800z" opacity=".1" />
-            </svg>
-          </div>
+          
 
           <div className="container mx-auto px-6 md:px-12 lg:px-20 relative z-10">
-            <h2 className="text-4xl font-extrabold mb-14 text-center text-white animate-on-scroll">
+            <h2 className="text-4xl font-extrabold mb-14 text-center text-black animate-on-scroll">
               Our Services
             </h2>
             <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
@@ -297,196 +274,16 @@ export default function LandingPage() {
               ))}
             </div>
           </div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400 opacity-20 rounded-full -mb-32 -ml-32 animate-pulse" />
-          <div className="absolute top-1/2 right-0 w-96 h-96 bg-indigo-500 opacity-20 rounded-full -mt-48 -mr-48 animate-pulse" />
+          
         </section>
 
 
         {/* Video Section */}
-        <section className="hidden lg:py-16 bg-gray-50">
-          <div className="hidden lg:block container mx-auto px-6 md:px-12 lg:px-20">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* Left Content Section */}
-              <div className="flex flex-col justify-center space-y-6">
-                <h2 className="text-4xl font-extrabold text-gray-800">
-                  Learn German with Ease
-                </h2>
-                <p className="text-lg text-gray-600 leading-relaxed">
-                  Dive into the German language with live interactive classes,
-                  personalized lessons, and practical exercises. Whether you&apos;re a
-                  beginner or advancing your skills, we have the perfect course for
-                  you. Explore grammar, vocabulary, and pronunciation in engaging
-                  sessions designed for all learners.
-                </p>
-                <ul className="space-y-4">
-                  <li className="flex items-center space-x-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="w-6 h-6 text-blue-500"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span>Live interactive classes</span>
-                  </li>
-                  <li className="flex items-center space-x-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="w-6 h-6 text-blue-500"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span>Comprehensive grammar & vocabulary training</span>
-                  </li>
-                  <li className="flex items-center space-x-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="w-6 h-6 text-blue-500"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span>Pronunciation practice with real-time feedback</span>
-                  </li>
-                </ul>
-                <a
-                  href="#"
-                  className="inline-block px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-600 transition"
-                >
-                  Join Our Classes Today
-                </a>
-              </div>
 
-              {/* Right Video Section */}
-              <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transform transition-all duration-300 hover:scale-105">
-                <video
-                  className="w-full h-full object-cover"
-                  controls
-                  poster="/placeholder.svg?height=300&width=400"
-                  autoPlay
-                  loop
-                  muted
-                >
-                  <source src="/videos/bunny.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="py-16 bg-gray-50">
+        <section className="py-16 bg-[#f3eeec]">
           <div className="container mx-auto px-6 md:px-12 lg:px-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              {/* Left Video Section */}
-              <div className="hidden lg:block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transform transition-all duration-300 hover:scale-105">
-                <video
-                  className="w-full h-full object-cover"
-                  controls
-                  poster="/placeholder.svg?height=300&width=400"
-                  autoPlay
-                  loop
-                  muted
-                >
-                  <source src="/videos/bunny.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
 
-              {/* Right Content Section */}
-              <div className="hidden lg:flex flex-col justify-center space-y-6">
-                <h2 className="text-4xl font-extrabold text-gray-800">
-                  Explore German Culture While Learning
-                </h2>
-                <p className="text-lg text-gray-600 leading-relaxed">
-                  Immerse yourself in the richness of German traditions, festivals, and
-                  history while mastering the language. We offer cultural insights
-                  alongside linguistic training, making learning fun and engaging.
-                </p>
-                <ul className="space-y-4">
-                  <li className="flex items-center space-x-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="w-6 h-6 text-blue-500"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span>Interactive language and culture workshops</span>
-                  </li>
-                  <li className="flex items-center space-x-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="w-6 h-6 text-blue-500"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span>Learn idioms and expressions in real-life contexts</span>
-                  </li>
-                  <li className="flex items-center space-x-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="w-6 h-6 text-blue-500"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span>Boost your confidence in speaking German</span>
-                  </li>
-                </ul>
-                <a
-                  className="inline-block px-6 py-3 w-[25%] text-center bg-blue-500 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-600 transition"
-                  onClick={() => {
-                    const aboutSection = document.getElementById('courses');
-                    aboutSection?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  Enroll Now
-                </a>
-              </div>
               <div className="flex flex-col justify-center space-y-6">
                 <h2 className="text-4xl font-extrabold text-gray-800">
                   Learn German with Ease
@@ -552,71 +349,82 @@ export default function LandingPage() {
                   </li>
                 </ul>
                 <a
+                  href='/quiz'
                   className="inline-block px-6 py-3 lg:w-[25%] text-center bg-blue-500 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-600 transition"
-                  onClick={() => {
-                    const aboutSection = document.getElementById('test');
-                    aboutSection?.scrollIntoView({ behavior: 'smooth' });
-                  }}
                 >
                   Start a test
                 </a>
               </div>
               {/* Left Video Section */}
               <div className="hidden lg:block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transform transition-all duration-300 hover:scale-105">
-                <video
-                  className="w-full h-full object-cover"
-                  controls
-                  poster="/placeholder.svg?height=300&width=400"
-                  autoPlay
-                  loop
-                  muted
-                >
-                  <source src="/videos/three.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                <Image
+                  src="https://i.pinimg.com/736x/55/4b/57/554b572b7b1a9b88f0dcbc4c48a8b989.jpg"
+                  alt=""
+                  width={200}
+                  height={200}
+                  className='w-full h-full object-contain '
+                />
               </div>
             </div>
           </div>
         </section>
+        <section id="courses" className="py-16 bg-[#f3eeec]">
+          <div className="container mx-auto px-4 md:px-8 lg:px-16 xl:px-24">
+            <h2 className="text-3xl font-bold mb-12 text-center animate-on-scroll">Our Courses and Pricing</h2>
+            <div className="grid md:grid-cols-3 gap-8 animate-on-scroll">
+              {/* Beginner Plan */}
+              <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 transform hover:scale-105 transition-all duration-300 ease-in-out">
+                <h3 className="text-xl font-semibold mb-4 text-center text-blue-600">Beginner</h3>
+                <ul className="mb-6 text-gray-600">
+                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Basic grammar and vocabulary</li>
+                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Simple conversations</li>
+                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Cultural introduction</li>
+                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> 4 hours of 1-on-1 sessions</li>
+                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> 2 group workshops</li>
+                </ul>
+                <p className="text-2xl font-bold mb-4 text-center text-blue-600">$100<span className="text-sm font-normal text-gray-600">/month</span></p>
+                <Button className="w-full bg-blue-600 hover:bg-blue-600 hover:text-white transition-colors">Choose Plan</Button>
+              </div>
 
+              {/* Intermediate Plan */}
+              <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 transform hover:scale-105 transition-all duration-300 ease-in-out">
+                <h3 className="text-xl font-semibold mb-4 text-center text-blue-600">Intermediate</h3>
+                <ul className="mb-6 text-gray-600">
+                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Advanced grammar concepts</li>
+                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Expanded vocabulary</li>
+                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Conversational fluency</li>
+                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> 8 hours of 1-on-1 sessions</li>
+                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> 4 group workshops</li>
+                </ul>
+                <p className="text-2xl font-bold mb-4 text-center text-blue-600">$200<span className="text-sm font-normal text-gray-600">/month</span></p>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 hover:text-white transition-colors">Choose Plan</Button>
+              </div>
+
+              {/* Advanced Plan */}
+              <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 transform hover:scale-105 transition-all duration-300 ease-in-out">
+                <h3 className="text-xl font-semibold mb-4 text-center text-blue-600">Advanced</h3>
+                <ul className="mb-6 text-gray-600">
+                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Complex language structures</li>
+                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Idiomatic expressions</li>
+                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Business German</li>
+                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> 12 hours of 1-on-1 sessions</li>
+                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> 6 group workshops</li>
+                </ul>
+                <p className="text-2xl font-bold mb-4 text-center text-blue-600">$300<span className="text-sm font-normal text-gray-600">/month</span></p>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 hover:text-white transition-colors">Choose Plan</Button>
+              </div>
+            </div>
+          </div>
+        </section>
         <ScrollToTopButton />
-        <Testimonial />
         <WhatsAppButton />
-        <ScrollBar />
 
         {/* Why Choose Us Section */}
-        <section id="why-us" className="py-16 bg-[#19324e] relative overflow-hidden">
+      <section id="why-us" className="py-16 bg-[#f3e8e3] relative overflow-hidden">
           {/* Background SVG */}
-          <div className="absolute inset-0 opacity-30">
-            <svg
-              className="h-full w-full"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 1000 1000"
-              preserveAspectRatio="none"
-            >
-              <defs>
-                <linearGradient
-                  id="why-choose-us-gradient"
-                  gradientUnits="userSpaceOnUse"
-                  x1="0"
-                  x2="1000"
-                  y1="0"
-                  y2="1000"
-                >
-                  <stop offset="0" stopColor="#4299e1" />
-                  <stop offset="1" stopColor="#3182ce" />
-                </linearGradient>
-              </defs>
-              <path fill="url(#why-choose-us-gradient)" d="M0 0l1000 1000H0V0z" />
-              <path fill="#fff" d="M0 200l1000 800H0V200z" opacity=".1" />
-              <path fill="#fff" d="M0 400l1000 600H0V400z" opacity=".1" />
-              <path fill="#fff" d="M0 600l1000 400H0V600z" opacity=".1" />
-              <path fill="#fff" d="M0 800l1000 200H0V800z" opacity=".1" />
-            </svg>
-          </div>
 
           <div className="container mx-auto px-4 md:px-8 lg:px-16 xl:px-24 relative z-10">
-            <h2 className="text-4xl font-extrabold text-center text-white mb-12 animate-on-scroll">
+            <h2 className="text-4xl font-extrabold text-center text-black mb-12 animate-on-scroll">
               Why Choose Us
             </h2>
             <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -691,63 +499,16 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400 opacity-20 rounded-full -mb-32 -ml-32 animate-pulse" />
-          <div className="absolute top-1/2 right-0 w-96 h-96 bg-indigo-500 opacity-20 rounded-full -mt-48 -mr-48 animate-pulse" />
         </section>
+        <CarouselHero />
 
 
+        <CourseGrid />
+        {/*here*/}
 
-        <section id="courses" className="py-16 bg-gray-100">
-          <div className="container mx-auto px-4 md:px-8 lg:px-16 xl:px-24">
-            <h2 className="text-3xl font-bold mb-12 text-center animate-on-scroll">Our Courses and Pricing</h2>
-            <div className="grid md:grid-cols-3 gap-8 animate-on-scroll">
-              {/* Beginner Plan */}
-              <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 transform hover:scale-105 transition-all duration-300 ease-in-out">
-                <h3 className="text-xl font-semibold mb-4 text-center text-blue-600">Beginner</h3>
-                <ul className="mb-6 text-gray-600">
-                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Basic grammar and vocabulary</li>
-                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Simple conversations</li>
-                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Cultural introduction</li>
-                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> 4 hours of 1-on-1 sessions</li>
-                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> 2 group workshops</li>
-                </ul>
-                <p className="text-2xl font-bold mb-4 text-center text-blue-600">$100<span className="text-sm font-normal text-gray-600">/month</span></p>
-                <Button className="w-full bg-blue-600 hover:bg-blue-600 hover:text-white transition-colors">Choose Plan</Button>
-              </div>
-
-              {/* Intermediate Plan */}
-              <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 transform hover:scale-105 transition-all duration-300 ease-in-out">
-                <h3 className="text-xl font-semibold mb-4 text-center text-blue-600">Intermediate</h3>
-                <ul className="mb-6 text-gray-600">
-                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Advanced grammar concepts</li>
-                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Expanded vocabulary</li>
-                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Conversational fluency</li>
-                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> 8 hours of 1-on-1 sessions</li>
-                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> 4 group workshops</li>
-                </ul>
-                <p className="text-2xl font-bold mb-4 text-center text-blue-600">$200<span className="text-sm font-normal text-gray-600">/month</span></p>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 hover:text-white transition-colors">Choose Plan</Button>
-              </div>
-
-              {/* Advanced Plan */}
-              <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 transform hover:scale-105 transition-all duration-300 ease-in-out">
-                <h3 className="text-xl font-semibold mb-4 text-center text-blue-600">Advanced</h3>
-                <ul className="mb-6 text-gray-600">
-                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Complex language structures</li>
-                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Idiomatic expressions</li>
-                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> Business German</li>
-                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> 12 hours of 1-on-1 sessions</li>
-                  <li className="mb-2 flex items-center"><svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> 6 group workshops</li>
-                </ul>
-                <p className="text-2xl font-bold mb-4 text-center text-blue-600">$300<span className="text-sm font-normal text-gray-600">/month</span></p>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 hover:text-white transition-colors">Choose Plan</Button>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* About Team Section */}
-        <section id='about-me' className="py-16 bg-gray-100">
+        <section id='about-me' className="py-16 bg-[#f3eeeb]">
           <div className="container mx-auto px-4 md:px-8 lg:px-16 xl:px-24">
             <h2 className="text-3xl font-bold text-black mb-12 text-center animate-on-scroll">About Me</h2>
             <div className="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-12">
@@ -778,83 +539,83 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Testimonials Section */}
-
-
-        {/* Contact Section */}
-        <section id="contact-us" className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[#19324e]" />
-          <div className="absolute inset-0 opacity-30">
-            <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="a" gradientUnits="userSpaceOnUse" x1="0" x2="1000" y1="0" y2="1000">
-                  <stop offset="0" stopColor="#4299e1" />
-                  <stop offset="1" stopColor="#3182ce" />
-                </linearGradient>
-              </defs>
-              <path fill="url(#a)" d="M0 0l1000 1000H0V0z" />
-              <path fill="#fff" d="M0 200l1000 800H0V200z" opacity=".1" />
-              <path fill="#fff" d="M0 400l1000 600H0V400z" opacity=".1" />
-              <path fill="#fff" d="M0 600l1000 400H0V600z" opacity=".1" />
-              <path fill="#fff" d="M0 800l1000 200H0V800z" opacity=".1" />
-            </svg>
-          </div>
-          <div className="container mx-auto px-4 md:px-8 lg:px-16 xl:px-24 relative z-10">
-            <h2 className="text-4xl font-bold mb-8 text-center animate-on-scroll text-white">
-              Contact Us
-            </h2>
-            <div className="max-w-xl mx-auto bg-white bg-opacity-90 backdrop-blur-sm rounded-lg shadow-lg p-8 animate-on-scroll">
-              <form className="space-y-6">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium text-gray-700">Your Name</label>
-                  <Input id="name" type="text" placeholder="John Doe" className="w-full" />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium text-gray-700">Your Email</label>
-                  <Input id="email" type="email" placeholder="john@example.com" className="w-full" />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-medium text-gray-700">Your Message</label>
-                  <Textarea id="message" placeholder="I'd like to learn more about your German courses..." className="w-full min-h-[100px]" />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="date" className="text-sm font-medium text-gray-700">Preferred Date for Consultation</label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        id="date"
-                        variant={"outline"}
-                        className={cn(
-                          "w-full justify-start text-left font-normal",
-                          !date && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {date ? format(date, "PPP") : <span>Pick a date</span>}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={setDate}
-                        initialFocus
+        {/*contact */}
+        <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+          <DialogContent className="sm:max-w-[600px]">
+            <DialogHeader>
+              <DialogTitle>Contact Us</DialogTitle>
+              <DialogDescription>
+                Fill out this form to get in touch with us.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-4">
+              <div className="container mx-auto px-4 relative z-10">
+                <div className="max-w-xl mx-auto bg-white rounded-lg p-8">
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="space-y-2">
+                      <label htmlFor="name" className="text-sm font-medium text-gray-700">
+                        Your Name
+                      </label>
+                      <Input id="name" type="text" placeholder="John Doe" className="w-full" />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="email" className="text-sm font-medium text-gray-700">
+                        Your Email
+                      </label>
+                      <Input id="email" type="email" placeholder="john@example.com" className="w-full" />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="message" className="text-sm font-medium text-gray-700">
+                        Your Message
+                      </label>
+                      <Textarea
+                        id="message"
+                        placeholder="I'd like to learn more about your German courses..."
+                        className="w-full min-h-[100px]"
                       />
-                    </PopoverContent>
-                  </Popover>
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="date" className="text-sm font-medium text-gray-700">
+                        Preferred Date for Consultation
+                      </label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            id="date"
+                            variant={"outline"}
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              !date && "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {date ? format(date, "PPP") : <span>Pick a date</span>}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={date}
+                            onSelect={setDate}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                    <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                      Send Message
+                    </Button>
+                  </form>
                 </div>
-                <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                  Send Message
-                </Button>
-              </form>
+              </div>
             </div>
-          </div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400 opacity-20 rounded-full -mb-32 -ml-32 animate-pulse" />
-          <div className="absolute top-1/2 right-0 w-96 h-96 bg-indigo-500 opacity-20 rounded-full -mt-48 -mr-48 animate-pulse" />
-        </section>
+          </DialogContent>
+        </Dialog>
+        {/* Testimonials Section */}
+        <Testimonial />
 
         {/* FAQ Section */}
-        <section className="py-20 bg-white">
+        <section className="py-20 bg-[#f3eeeb]">
           <div className="container mx-auto px-6 md:px-12 lg:px-20 xl:px-32">
             <h2 className="text-4xl font-bold text-center mb-12 animate-on-scroll">
               Frequently Asked Questions
@@ -905,21 +666,9 @@ export default function LandingPage() {
 
       </main>
 
-      <footer className="bg-[#19324e] text-white py-12 relative overflow-hidden">
+      <footer className="bg-[#f3e8e3] text-black py-12 relative overflow-hidden">
         <div className="absolute inset-0 opacity-30">
-          <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="footer-gradient" gradientUnits="userSpaceOnUse" x1="0" x2="1000" y1="0" y2="1000">
-                <stop offset="0" stopColor="#4299e1" />
-                <stop offset="1" stopColor="#3182ce" />
-              </linearGradient>
-            </defs>
-            <path fill="url(#footer-gradient)" d="M0 0l1000 1000H0V0z" />
-            <path fill="#fff" d="M0 200l1000 800H0V200z" opacity=".1" />
-            <path fill="#fff" d="M0 400l1000 600H0V400z" opacity=".1" />
-            <path fill="#fff" d="M0 600l1000 400H0V600z" opacity=".1" />
-            <path fill="#fff" d="M0 800l1000 200H0V800z" opacity=".1" />
-          </svg>
+          
         </div>
         <div className="container mx-auto px-4 md:px-8 lg:px-16 xl:px-24 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
@@ -927,7 +676,7 @@ export default function LandingPage() {
               <Link href="/" className="flex items-center space-x-2">
                 <span className="sr-only">DeutschLernen</span>
                 <svg
-                  className="h-8 w-8 text-white"
+                  className="h-8 w-8 text-black"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -953,7 +702,7 @@ export default function LandingPage() {
                   <li key={item}>
                     <Link
                       href={`#${item.toLowerCase().replace(' ', '-')}`}
-                      className="hover:text-blue-200 transition-colors duration-200 text-sm"
+                      className="hover:underline text-sm"
                     >
                       {item}
                     </Link>
@@ -996,9 +745,7 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400 opacity-20 rounded-full -mb-32 -ml-32 animate-pulse" />
-        <div className="absolute top-1/2 right-0 w-96 h-96 bg-indigo-500 opacity-20 rounded-full -mt-48 -mr-48 animate-pulse" />
-      </footer>
+        </footer>
     </div>
   )
 }

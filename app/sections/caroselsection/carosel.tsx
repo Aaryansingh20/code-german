@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"
 import { CheckCircle2 } from 'lucide-react'
 
@@ -41,68 +40,64 @@ export default function CarouselHero() {
   }, [])
 
   return (
-    <div className="w-full max-w-[85rem] mx-auto px-4 py-8">
-      <Card className="overflow-hidden">
-        <CardContent className="p-0">
-          <div className="flex flex-col lg:flex-row">
-            <div className="lg:w-1/2 p-6 lg:p-10 lg:pr-8 flex flex-col justify-center">
-              <h1 className="text-4xl font-bold mb-6">Learn German with Ease</h1>
-              <p className="text-lg text-muted-foreground mb-6">
-                Dive into the German language with live interactive classes, personalized lessons,
-                and practical exercises. Whether you&apos;re a beginner or advancing your skills, we
-                have the perfect course for you.
-              </p>
-              <ul className="space-y-5 mb-8">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="text-green-500 h-5 w-5 flex-shrink-0" />
-                  <span>Live interactive classes</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="text-green-500 h-5 w-5 flex-shrink-0" />
-                  <span>Comprehensive grammar & vocabulary training</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="text-green-500 h-5 w-5 flex-shrink-0" />
-                  <span>Pronunciation practice with real-time feedback</span>
-                </li>
-              </ul>
-              <Button size="default" className="w-[30%] bg-blue-600 hover:bg-blue-500 ">
-                Start a free lesson
-              </Button>
-            </div>
-            <div className="lg:w-1/2 relative ">
-              <div className="aspect-w-4 aspect-h-3 lg:aspect-h-full">
-                {images.map((image, index) => (
-                  <Image
-                    key={image.src}
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    className={`object-cover transition-opacity duration-500 ${
-                      index === currentImage ? "opacity-100" : "opacity-0"
-                    }`}
-                    priority={index === 0}
-                  />
-                ))}
-              </div>
-              <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10">
-                {images.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentImage(index)}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      index === currentImage 
-                        ? "bg-white w-4" 
-                        : "bg-white/50 hover:bg-white/75"
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="flex flex-col lg:flex-row gap-12">
+        <div className="lg:w-1/2 flex flex-col justify-center">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-6 text-white">Get a 30-Minute German Demo Session for Free</h1>
+          <p className="text-xl text-white mb-8">
+            Dive into the German language with live interactive classes, personalized lessons,
+            and practical exercises. Whether you&apos;re a beginner or advancing your skills, we
+            have the perfect course for you.
+          </p>
+          <ul className="space-y-4 mb-8 text-white">
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="text-green-600 h-6 w-6 flex-shrink-0" />
+              <span>Live interactive classes</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="text-green-600 h-6 w-6 flex-shrink-0" />
+              <span>Comprehensive grammar & vocabulary training</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="text-green-600 h-6 w-6 flex-shrink-0" />
+              <span>Pronunciation practice with real-time feedback</span>
+            </li>
+          </ul>
+          <Button size="default" className="sm:w-auto h-[50px] lg:w-[30%] bg-[#f2b31e] hover:bg-[#f9d98c] text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-300">
+            Start a free lesson
+          </Button>
+        </div>
+        <div className="lg:w-1/2 relative">
+          <div className="aspect-w-4 aspect-h-3 lg:aspect-h-full">
+            {images.map((image, index) => (
+              <Image
+                key={image.src}
+                src={image.src}
+                alt={image.alt}
+                fill
+                className={`object-cover transition-opacity duration-500 ${
+                  index === currentImage ? "opacity-100" : "opacity-0"
+                }`}
+                priority={index === 0}
+              />
+            ))}
           </div>
-        </CardContent>
-      </Card>
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentImage(index)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === currentImage 
+                    ? "bg-white w-4" 
+                    : "bg-white/50 hover:bg-white/75"
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

@@ -48,7 +48,7 @@ export default function CourseGrid() {
   ]
 
   return (
-    <section id="courses" className="py-12 px-4 md:py-16 lg:py-20 bg-[#f3e8e3]">
+    <section id="courses" className="py-12 px-4 md:py-16 lg:py-20 bg-white">
       <div className="container mx-auto max-w-[87rem] px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-black">
@@ -96,7 +96,7 @@ export default function CourseGrid() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                <Button className="w-full bg-[#f2b31e] hover:bg-[#f9d98c] text-white">
                   <GraduationCap className="mr-2 h-4 w-4" />
                   Enroll Now
                 </Button>

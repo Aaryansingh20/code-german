@@ -35,7 +35,7 @@ const Testimonial = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f3eeeb] p-4 sm:p-8 flex items-center justify-center">
+    <div className="min-h-screen bg-white p-4 sm:p-8 flex items-center justify-center">
       <div className="w-full max-w-4xl mx-auto">
         <div className="flex flex-col items-center gap-4 sm:gap-8 relative">
           {/* Testimonials Section */}
